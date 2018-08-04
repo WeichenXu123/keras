@@ -169,7 +169,7 @@ def multi_gpu_model(model, gpus=None, cpu_merge=True, cpu_relocation=False):
 
     import tensorflow as tf
 
-    target_devices = ['/cpu:0'] + ['/gpu:%d' % i for i in target_gpu_ids]
+    target_devices = ['/cpu:0']# + ['/gpu:%d' % i for i in target_gpu_ids]
     for device in target_devices:
         if device not in available_devices:
             raise ValueError(
@@ -206,7 +206,7 @@ def multi_gpu_model(model, gpus=None, cpu_merge=True, cpu_relocation=False):
     # Place a copy of the model on each GPU,
     # each getting a slice of the inputs.
     for i, gpu_id in enumerate(target_gpu_ids):
-        with tf.device('/gpu:%d' % gpu_id):
+        with tf.device('/cpu:0'):
             with tf.name_scope('replica_%d' % gpu_id):
                 inputs = []
                 # Retrieve a slice of the input.

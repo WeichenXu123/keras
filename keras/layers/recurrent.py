@@ -551,6 +551,11 @@ class RNN(Layer):
         # note that the .build() method of subclasses MUST define
         # self.input_spec and self.state_spec with complete input shapes.
         if isinstance(inputs, list):
+            if (len(inputs) > 1):
+                if (constants is None):
+                    initial_state = inputs[1:]
+                else:
+                    initial_state = inputs[1:-len(constants)]
             inputs = inputs[0]
         if initial_state is not None:
             pass
@@ -562,6 +567,7 @@ class RNN(Layer):
         if isinstance(mask, list):
             mask = mask[0]
 
+        # print("DBG, rnn.call: initial_state: " + str(initial_state))
         if len(initial_state) != len(self.states):
             raise ValueError('Layer has ' + str(len(self.states)) +
                              ' states but was passed ' +
